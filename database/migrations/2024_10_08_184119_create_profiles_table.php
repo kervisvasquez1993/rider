@@ -16,14 +16,12 @@ return new class extends Migration
             $table->string('name');
             $table->string('last_name');
             $table->string('phone');
-            $table->string('img_url')->nullable(); // La imagen puede ser opcional
-            $table->unsignedBigInteger('user_id'); // Clave foránea a la tabla users
+            $table->string('img_url')->nullable();
+            $table->unsignedBigInteger('user_id');
             $table->date('date_of_birth');
-            $table->enum('gender', ['hombre', 'mujer']); // Puedes ajustar según los valores permitidos
+            $table->enum('gender', ['hombre', 'mujer']); 
             $table->softDeletes();
             $table->timestamps();
-    
-            // Relación con la tabla `users`
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
