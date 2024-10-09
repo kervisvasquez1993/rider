@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('ride_statuses', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('ride_id')->constrained('rides')->onDelete('cascade');
+            $table->enum('status', ['pending', 'in_progress', 'completed', 'canceled']); 
             $table->timestamps();
+            $table->softDeletes(); 
         });
     }
 

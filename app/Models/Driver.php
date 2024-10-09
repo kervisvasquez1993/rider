@@ -10,11 +10,11 @@ class Driver extends Model
 {
     use HasFactory, SoftDeletes;
     protected $fillable = [
-        'profile_id', // Relación con el perfil
-        'vehicle_id', // ID del vehículo
-        'license_plate', // Placa del vehículo
-        'rating', // Calificación del conductor
-        'status', // Estado del conductor (disponible, en viaje, etc.)
+        'profile_id', 
+        'vehicle_id',
+        'license_plate', 
+        'rating',
+        'status',
     ];
 
     /**

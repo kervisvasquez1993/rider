@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('profile_id')->constrained('profiles')->onDelete('cascade');
+            $table->integer('loyalty_points')->default(0);
+            $table->text('preferences')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

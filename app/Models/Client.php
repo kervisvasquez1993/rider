@@ -10,9 +10,9 @@ class Client extends Model
 {
     use HasFactory, SoftDeletes;
     protected $fillable = [
-        'profile_id', // Relación con el perfil
-        'loyalty_points', // Ejemplo de un campo específico para clientes
-        'preferences', // Preferencias del cliente
+        'profile_id',
+        'loyalty_points',
+        'preferences',
     ];
 
     /**
