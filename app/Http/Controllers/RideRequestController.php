@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\NotifyDriversAboutRideRequest;
 use App\Models\RideRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -23,7 +24,6 @@ class RideRequestController extends Controller
     public function store(Request $request)
     {
         try {
-            // Validación de los datos de entrada
             $rules = [
                 'pickup_latitude' => 'required|numeric|between:-90,90',
                 'pickup_longitude' => 'required|numeric|between:-180,180',
@@ -48,8 +48,6 @@ class RideRequestController extends Controller
                     'message' => 'Ya tienes una solicitud de carrera en progreso. No puedes realizar otra solicitud hasta que se resuelva la anterior.'
                 ], Response::HTTP_CONFLICT);
             }
-
-            // Calcular distancia y tarifa
             $distance = $this->calculateDistance(
                 $request->input('pickup_latitude'),
                 $request->input('pickup_longitude'),
@@ -58,16 +56,13 @@ class RideRequestController extends Controller
             );
             $requestedAt = now()->toDateTimeString();
             $fare = $this->calculateFare($distance, $requestedAt);
-
-            // Preparar los datos para la creación
             $dataToCreate = $request->only(['pickup_latitude', 'pickup_longitude', 'dropoff_latitude', 'dropoff_longitude']);
             $dataToCreate['client_id'] = $client_id;
             $dataToCreate['distance'] = $distance;
             $dataToCreate['fare'] = $fare;
             $dataToCreate['status'] = 'pending';
-
-            // Crear la nueva solicitud de carrera
             $data = RideRequest::create($dataToCreate);
+            NotifyDriversAboutRideRequest::dispatch($data); 
 
             return response()->json([
                 'message' => 'Recurso creado exitosamente',

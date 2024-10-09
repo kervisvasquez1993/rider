@@ -2,53 +2,36 @@
 
 namespace App\Notifications;
 
+use App\Models\RideRequest;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Notifications\Notification;
 
-class RideRequestCreated extends Notification
+class RideRequestCreated extends Notification implements ShouldQueue
 {
-    use Queueable;
+    use Dispatchable, Queueable;
 
-    /**
-     * Create a new notification instance.
-     */
-    public function __construct()
+    protected $rideRequest;
+
+    public function __construct(RideRequest $rideRequest)
     {
-        //
+        $this->rideRequest = $rideRequest;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
-     */
-    public function via(object $notifiable): array
+    public function via($notifiable)
     {
-        return ['mail'];
+        return ['database']; 
     }
 
-    /**
-     * Get the mail representation of the notification.
-     */
-    public function toMail(object $notifiable): MailMessage
-    {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(object $notifiable): array
+    public function toDatabase($notifiable)
     {
         return [
-            //
+            'ride_request_id' => $this->rideRequest->id,
+            'pickup_location' => $this->rideRequest->pickup_location,
+            'dropoff_location' => $this->rideRequest->dropoff_location,
+            'status' => $this->rideRequest->status,
+            'requested_at' => $this->rideRequest->requested_at,
         ];
     }
 }
