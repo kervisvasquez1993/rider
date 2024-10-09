@@ -12,15 +12,13 @@ class RideRequest extends Model
     protected $table = 'ride_requests';
     protected $fillable = [
         'client_id',
-        'pickup_location',
-        'dropoff_location',
+        'pickup_latitude',
+        'pickup_longitude',
+        'dropoff_latitude',
+        'dropoff_longitude',
         'distance',
         'fare',
         'requested_at',
         'status',
     ];
-    public function client()
-    {
-        return $this->belongsTo(Client::class);
-    }
 }

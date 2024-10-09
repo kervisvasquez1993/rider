@@ -15,8 +15,10 @@ return new class extends Migration
         Schema::create('ride_requests', function (Blueprint $table) {
             $table->id(); 
             $table->foreignId('client_id')->constrained('clients');
-            $table->string('pickup_location');
-            $table->string('dropoff_location');
+            $table->decimal('pickup_latitude', 10, 8);
+            $table->decimal('pickup_longitude', 11, 8);
+            $table->decimal('dropoff_latitude', 10, 8);
+            $table->decimal('dropoff_longitude', 11, 8);
             $table->decimal('distance', 10, 2);
             $table->decimal('fare', 10, 2);
             $table->timestamp('requested_at')->default(DB::raw('CURRENT_TIMESTAMP'));
@@ -24,6 +26,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
     }
 
     /**

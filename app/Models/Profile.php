@@ -18,4 +18,13 @@ class Profile extends Model
         'date_of_birth',
         'gender'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function client()
+    {
+        return $this->hasOne(Client::class);
+    }
 }

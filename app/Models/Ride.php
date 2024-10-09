@@ -9,8 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Ride extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $table = 'rides'; // Nombre de la tabla
-
+    protected $table = 'rides'; 
     protected $fillable = [
         'client_id',
         'driver_id',
