@@ -12,8 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('wallet_transactions', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id(); 
+            $table->foreignId('user_id')->constrained('users'); 
+            $table->decimal('amount', 10, 2); 
+            $table->foreignId('ride_request_id')->nullable()->constrained('ride_requests'); 
+            $table->enum('status', ['pending', 'completed', 'cancelled']); 
+            $table->timestamps(); 
+            $table->softDeletes(); 
         });
     }
 
