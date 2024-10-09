@@ -12,19 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rides', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
-            $table->foreignId('driver_id')->constrained('drivers')->onDelete('cascade');
-            $table->foreignId('vehicle_id')->constrained('vehicles')->onDelete('cascade');
-            $table->string('pickup_location'); // Ubicación de recogida
-            $table->string('dropoff_location'); // Ubicación de destino
-            $table->decimal('distance', 8, 2); // Distancia de la carrera
-            $table->decimal('fare', 10, 2); // Tarifa de la carrera
-            $table->enum('status', ['pending', 'in_progress', 'completed', 'canceled'])->default('pending'); // Estado de la carrera
-            $table->timestamp('start_time')->nullable(); // Hora de inicio de la carrera
-            $table->timestamp('end_time')->nullable(); // Hora de finalización de la carrera
-            $table->timestamps();
-            $table->softDeletes(); 
+            $table->id(); // ID auto incremental
+            $table->foreignId('client_id')->constrained('clients'); // Referencia al cliente
+            $table->foreignId('driver_id')->constrained('drivers', 'profile_id'); // Referencia al conductor
+            $table->foreignId('ride_request_id')->constrained('ride_requests'); // Referencia a la solicitud de carrera
+            $table->enum('status', ['pending', 'en_route_to_client', 'in_progress', 'completed', 'canceled']); // Estado de la carrera
+            $table->timestamp('start_time')->nullable(); // Hora de inicio
+            $table->timestamp('end_time')->nullable(); // Hora de finalización
+            $table->timestamps(); // Agrega created_at y updated_at
+            $table->softDeletes();
         });
     }
 

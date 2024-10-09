@@ -9,18 +9,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Ride extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $table = 'rides'; // Nombre de la tabla
+
     protected $fillable = [
         'client_id',
         'driver_id',
-        'vehicle_id',
-        'pickup_location',
-        'dropoff_location',
-        'distance',
-        'fare',
+        'ride_request_id',
         'status',
         'start_time',
         'end_time',
     ];
+
 
     public function client()
     {
