@@ -71,7 +71,7 @@ class AuthController extends Controller
             if (!Hash::check($request->password, $user->password)) {
                 return response()->json(['error' => 'La contraseña es incorrecta'], 401);
             }
-            Auth::login($user);           
+            Auth::login($user);
             $tokenResult = $user->createToken('Personal Access Token');
             $token = $tokenResult->token;
             $token->save();
@@ -83,7 +83,7 @@ class AuthController extends Controller
             return response()->json([
                 'error' => 'Ocurrió un error interno en el servidor. Por favor, intente nuevamente.',
                 'details' => $e->getMessage() // Esto es opcional, para mostrar el detalle del error solo en desarrollo
-            ], 500); 
+            ], 500);
         }
     }
 
@@ -94,6 +94,18 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Successfully logged out',
+        ]);
+    }
+
+
+    public function notifications()
+    {
+        $user = Auth::user();
+        $notifications = $user->notifications;
+
+        return response()->json([
+            'message' => 'Notificaciones obtenidas exitosamente',
+            'data' => $notifications,
         ]);
     }
 }

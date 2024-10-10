@@ -62,7 +62,7 @@ class RideRequestController extends Controller
             $dataToCreate['fare'] = $fare;
             $dataToCreate['status'] = 'pending';
             $data = RideRequest::create($dataToCreate);
-            NotifyDriversAboutRideRequest::dispatch($data); 
+            NotifyDriversAboutRideRequest::dispatch($data);
 
             return response()->json([
                 'message' => 'Recurso creado exitosamente',

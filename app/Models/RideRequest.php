@@ -21,4 +21,8 @@ class RideRequest extends Model
         'requested_at',
         'status',
     ];
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 }
