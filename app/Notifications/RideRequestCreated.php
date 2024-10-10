@@ -11,10 +11,8 @@ use Illuminate\Notifications\Notification;
 class RideRequestCreated extends Notification implements ShouldQueue
 {
     use Dispatchable, Queueable;
-
     protected $rideRequest;
     protected $clientProfile;
-
     public function __construct($rideRequest, $clientProfile)
     {
         $this->rideRequest = $rideRequest;
@@ -24,7 +22,6 @@ class RideRequestCreated extends Notification implements ShouldQueue
     {
         return ['database'];
     }
-
     public function toDatabase($notifiable)
     {
         return [

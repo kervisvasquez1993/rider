@@ -12,4 +12,5 @@ Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::middleware('auth:api')->group(function () {
     Route::get('notifications', [AuthController::class, 'notifications'])->name('notifications.notifications');
     Route::post('new-request-rider', [RideRequestController::class, 'store'])->name('new-request-rider.store');
+    Route::patch('acepted-request-rider/{id}', [RideRequestController::class, 'aceptedRequest'])->name('acepted-request-rider.aceptedRequest');
 });

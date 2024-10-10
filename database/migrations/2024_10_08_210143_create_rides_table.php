@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('rides', function (Blueprint $table) {
             $table->id(); // ID auto incremental
-            $table->foreignId('client_id')->constrained('clients'); // Referencia al cliente
-            $table->foreignId('driver_id')->constrained('drivers', 'profile_id'); // Referencia al conductor
+            $table->foreignId('client_id')->constrained('clients');
+            $table->foreignId('driver_id')->constrained('drivers'); 
             $table->foreignId('ride_request_id')->constrained('ride_requests'); // Referencia a la solicitud de carrera
             $table->enum('status', ['pending', 'en_route_to_client', 'in_progress', 'completed', 'canceled']); // Estado de la carrera
             $table->timestamp('start_time')->nullable(); // Hora de inicio

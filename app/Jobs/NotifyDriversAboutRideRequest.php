@@ -24,15 +24,10 @@ class NotifyDriversAboutRideRequest implements ShouldQueue
 
     public function handle()
     {
-     
         $client = Client::with('profile')->find($this->rideRequest->client_id);
-
         if ($client) {
-            // Obtener todos los conductores
             $drivers = User::where('role', 'driver')->get();
-
             foreach ($drivers as $driver) {
-                // Notificar a cada conductor con la solicitud de carrera y la información del cliente
                 $driver->notify(new RideRequestCreated($this->rideRequest, $client->profile));
             }
         }

@@ -27,4 +27,8 @@ class Profile extends Model
     {
         return $this->hasOne(Client::class);
     }
+
+    public function driver(){
+        return $this->hasOne(Driver::class);
+    }
 }
