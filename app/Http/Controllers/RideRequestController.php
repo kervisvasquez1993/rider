@@ -108,51 +108,47 @@ class RideRequestController extends Controller
         return round($fare, 2);
     }
 
-    public function acceptedRequest($id)
+    public function aceptedRequest($id)
     {
         try {
             $rideRequest = RideRequest::findOrFail($id);
-
+            NotifyClientOfAcceptedRide::dispatch($rideRequest);
             if (auth()->user()->role !== 'driver') {
                 return response()->json([
                     'message' => 'Not authorized',
                     'errors' => "Only drivers can accept requests"
                 ], Response::HTTP_FORBIDDEN);
             }
-
             if ($rideRequest->status != 'pending') {
                 return response()->json([
                     'message' => 'Ride request cannot be accepted',
                     'errors' => 'This ride request is not in a pending state'
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
-
             $existingRide = Ride::where('client_id', $rideRequest->client_id)
                 ->where('driver_id', auth()->user()->profile->driver->id)
                 ->where('ride_request_id', $rideRequest->id)
                 ->first();
-
             if ($existingRide) {
                 return response()->json([
                     'message' => 'A ride already exists for this client, driver, and ride request',
                     'ride' => $existingRide
                 ], Response::HTTP_CONFLICT);
             }
-
-            // Actualiza el estado de la solicitud de carrera
             $rideRequest->status = 'accepted';
             $rideRequest->save();
 
-            // Crea la carrera
-            $driver = auth()->user()->profile->driver;
+
+
             $ride = Ride::create([
                 'client_id' => $rideRequest->client_id,
-                'driver_id' => $driver->id,
+                'driver_id' => auth()->user()->profile->driver->id,
                 'ride_request_id' => $rideRequest->id,
                 'status' => 'pending'
             ]);
-            NotifyClientOfAcceptedRide::dispatch($rideRequest, $ride );
-
+            error_log($rideRequest);
+            error_log($ride);
+            
             return response()->json([
                 'message' => 'Ride request accepted successfully',
                 'ride_request' => $rideRequest,

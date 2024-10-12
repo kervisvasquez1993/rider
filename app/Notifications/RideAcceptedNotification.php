@@ -6,10 +6,10 @@ use App\Models\Ride;
 use App\Models\Profile;
 use App\Models\Vehicle;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
-class RideAcceptedNotification extends Notification
+class RideAcceptedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -42,16 +42,13 @@ class RideAcceptedNotification extends Notification
         return ['database'];
     }
 
-
-
-
     /**
-     * Get the array representation of the notification.
+     * Get the array representation of the notification for database storage.
      *
      * @param mixed $notifiable
      * @return array
      */
-    public function toArray($notifiable)
+    public function toDatabase($notifiable)
     {
         return [
             'ride_status' => $this->ride->status,
